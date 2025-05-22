@@ -1,10 +1,24 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { fetchData, postForm } from '../api';
 
 export default function Home() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetchData().then(setData).catch(console.error);
+  }, []);
+
+  const handleSubmit = async () => {
+    const formData = { name: 'Luke', message: 'Hello' };
+    const response = await postForm(formData);
+    console.log('Form response:', response);
+  };
+
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Welcome to MichelleKinzai Frontend</h1>
-      <p>This is the homepage. Deploy this React app directly to Vercel.</p>
-    </main>
+    <div>
+      <h1>Home</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <button onClick={handleSubmit}>Send Form</button>
+    </div>
   );
 }
